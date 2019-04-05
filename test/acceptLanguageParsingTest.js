@@ -128,6 +128,44 @@ t.test("Sets the language if it is last in the supported list", function(t) {
 });
 
 t.test(
+  "Sets the language if it is last in the supported list and not the first language in the header",
+  function(t) {
+    const middleware = acceptLanguageMiddleware({
+      supported: ["en", "es"],
+      default: "es"
+    });
+    const req = mockRequest("fr-CA,fr;q=0.8,en-US;q=0.6,en;q=0.4,*;q=0.1");
+    middleware(req, {}, sinon.fake());
+    t.equal(req.language, "en");
+    t.end();
+  }
+);
+
+t.test("Sets the language to a supported one from a long set", function(t) {
+  const middleware = acceptLanguageMiddleware({
+    supported: ["zh"]
+  });
+  const req = mockRequest("fr,en,es,zh,da");
+  middleware(req, {}, sinon.fake());
+  t.equal(req.language, "zh");
+  t.end();
+});
+
+t.test(
+  "Sets the language to default if the header contains only unsupported languages",
+  function(t) {
+    const middleware = acceptLanguageMiddleware({
+      supported: ["ja"],
+      default: "ja"
+    });
+    const req = mockRequest("fr,en,es,da");
+    middleware(req, {}, sinon.fake());
+    t.equal(req.language, "ja");
+    t.end();
+  }
+);
+
+t.test(
   "Sets the language to the default en if it is not in the supported list",
   function(t) {
     const middleware = acceptLanguageMiddleware({ supported: ["zh", "en"] });

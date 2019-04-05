@@ -8,10 +8,16 @@ module.exports = function(props) {
 
   return function(req, res, next) {
     if (req.headers && req.headers["accept-language"] != null) {
-      const parseResult = parser.parse(req.headers["accept-language"]);
+      let languages = parser.parse(req.headers["accept-language"]);
 
-      if (parseResult[0] != null) {
-        req.language = parseResult[0].code;
+      if (options.supported) {
+        languages = languages.filter(function(language) {
+          return options.supported.includes(language.code);
+        });
+      }
+
+      if (languages[0] != null) {
+        req.language = languages[0].code;
       }
     }
 
