@@ -18,6 +18,10 @@ module.exports = function(props) {
 
       if (languages[0] != null) {
         req.language = languages[0].code;
+
+        req.locale = `${languages[0].code}${
+          languages[0].region ? "-" + languages[0].region : ""
+        }`;
       }
     }
 
@@ -26,6 +30,7 @@ module.exports = function(props) {
       (options.supported && !options.supported.includes(req.language))
     ) {
       req.language = options.default;
+      req.locale = options.default;
     }
     next();
   };

@@ -22,6 +22,7 @@ var acceptLanguageMiddleware = require("accept-language-middleware");
 app.use(acceptLanguageMiddleware());
 app.get('/', function(req, res, next) {
   console.log(req.language); // 'en'
+  console.log(req.locale); // 'en-US'
 });
 ```
 

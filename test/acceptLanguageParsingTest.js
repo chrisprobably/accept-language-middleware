@@ -61,6 +61,74 @@ t.test("Should get a language from a set", function(t) {
   t.end();
 });
 
+t.test("Should get a locale from a set", function(t) {
+  const middleware = acceptLanguageMiddleware();
+  const req = mockRequest("fr-CA,fr;q=0.8");
+  middleware(req, {}, sinon.fake());
+  t.equal(req.locale, "fr-CA");
+  t.end();
+});
+
+t.test("Should set locale to default language of en if blank header", function(
+  t
+) {
+  const middleware = acceptLanguageMiddleware();
+  const req = mockRequest("");
+  middleware(req, {}, sinon.fake());
+  t.equal(req.locale, "en");
+  t.end();
+});
+
+t.test("Should set locale to default language of en if no header", function(t) {
+  const middleware = acceptLanguageMiddleware();
+  const req = mockRequest();
+  delete req.headers["accept-language"];
+  middleware(req, {}, sinon.fake());
+  t.equal(req.locale, "en");
+  t.end();
+});
+
+t.test(
+  "Should set locale to default language if no supported languages found",
+  function(t) {
+    const middleware = acceptLanguageMiddleware({ supported: ["es"] });
+    const req = mockRequest("fr");
+    middleware(req, {}, sinon.fake());
+    t.equal(req.locale, "en");
+    t.end();
+  }
+);
+
+t.test(
+  "Should get a locale of just language if no region is specified in header",
+  function(t) {
+    const middleware = acceptLanguageMiddleware();
+    const req = mockRequest("fr");
+    middleware(req, {}, sinon.fake());
+    t.equal(req.locale, "fr");
+    t.end();
+  }
+);
+
+t.test(
+  "Should get a locale of just language even if other items in the header contain regions",
+  function(t) {
+    const middleware = acceptLanguageMiddleware();
+    const req = mockRequest("fr,zh-CN");
+    middleware(req, {}, sinon.fake());
+    t.equal(req.locale, "fr");
+    t.end();
+  }
+);
+
+t.test("Should get the locale of the supported language", function(t) {
+  const middleware = acceptLanguageMiddleware({ supported: ["en"] });
+  const req = mockRequest("fr-CA,fr;q=0.8,en-US;q=0.6,en;q=0.4,*;q=0.1");
+  middleware(req, {}, sinon.fake());
+  t.equal(req.locale, "en-US");
+  t.end();
+});
+
 t.test("Should parse a wildcard", function(t) {
   const middleware = acceptLanguageMiddleware();
   const req = mockRequest("fr-CA,*;q=0.8");
