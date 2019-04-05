@@ -1,0 +1,19 @@
+{
+  "name": "accept-language-middleware",
+  "version": "1.0.0",
+  "description": "Express middleware for parsing the Accept-Language header.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap test/*.js"
+  },
+  "repository": "https://github.com/chrisprobably/accept-language-middleware",
+  "author": "Chris Probably",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "bcp47": "^1.1.2"
+  },
+  "devDependencies": {
+    "tap": "^12.6.1"
+  }
+}
