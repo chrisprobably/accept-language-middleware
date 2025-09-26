@@ -14,15 +14,29 @@ or:
 
 `yarn add accept-language-middleware`
 
-Usage:
+Usage (ESM):
 
+```js
+import express from "express";
+import acceptLanguageMiddleware from "accept-language-middleware";
+
+const app = express();
+app.use(acceptLanguageMiddleware());
+app.get("/", (req, res, next) => {
+  console.log(req.language); // 'en'
+  console.log(req.locale); // 'en-US'
+});
 ```
-var express = require('express');
+
+Usage (CJS):
+
+```js
+var express = require("express");
 var app = express();
 var acceptLanguageMiddleware = require("accept-language-middleware");
 
 app.use(acceptLanguageMiddleware());
-app.get('/', function(req, res, next) {
+app.get("/", function (req, res, next) {
   console.log(req.language); // 'en'
   console.log(req.locale); // 'en-US'
 });
@@ -34,7 +48,7 @@ app.get('/', function(req, res, next) {
 
 Specify a default language to fallback on if none is passed:
 
-```
+```js
 app.use(acceptLanguageMiddleware({ default: "es" }));
 ```
 
@@ -42,7 +56,7 @@ app.use(acceptLanguageMiddleware({ default: "es" }));
 
 Specify a set of supported languages, if the incoming Accept-Language header does not contain a language in the supported list, then the default language will be used.
 
-```
+```js
 app.use(acceptLanguageMiddleware({ supported: ["en", "es", "zh"] }));
 ```
 

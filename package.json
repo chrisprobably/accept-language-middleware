@@ -14,10 +14,12 @@
   "scripts": {
     "test": "tap test/*.js"
   },
+  "types": "index.d.ts",
   "files": [
     "LICENSE",
     "README.md",
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "engines": {
     "node": ">=18.0.0"
