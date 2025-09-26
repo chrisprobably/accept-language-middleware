@@ -1,5 +1,7 @@
 # accept-language-middleware
 
+![release](https://github.com/chrisprobably/accept-language-middleware/workflows/release/badge.svg)
+
 Express middleware for parsing the Accept-Language header.
 
 ## Quick Start
